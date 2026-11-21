@@ -6,6 +6,7 @@ import viteLogo from './assets/vite.svg'
 import { Confetti } from './Confetti'
 import { MAX_CONFETTI_DURATION_MS, createBurst } from './confettiBurst'
 import type { ConfettiPiece } from './confettiBurst'
+import { PlatformerGame } from './PlatformerGame'
 import './App.css'
 
 const CELEBRATION_COUNT = 10
@@ -68,6 +69,8 @@ function App() {
           )}
         </p>
       </section>
+
+      <PlatformerGame />
 
       <Confetti pieces={confetti} />
 
