@@ -73,6 +73,54 @@ h2 {
   color: var(--text-h);
 }
 
+/* Animated headings: every heading constantly cycles through colors
+   and gently bobs up and down. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  animation:
+    heading-color-cycle 6s linear infinite,
+    heading-float 3s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Keep the color change, but drop the movement */
+    animation: heading-color-cycle 6s linear infinite;
+  }
+}
+
+/* Mid-saturation colors that stay readable on both light and dark bg */
+@keyframes heading-color-cycle {
+  0%,
+  100% {
+    color: #aa3bff;
+  }
+  20% {
+    color: #e0357d;
+  }
+  40% {
+    color: #e07a00;
+  }
+  60% {
+    color: #12a150;
+  }
+  80% {
+    color: #1a7fe0;
+  }
+}
+
+@keyframes heading-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
 h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
