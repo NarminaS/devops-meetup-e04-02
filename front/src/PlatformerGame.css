@@ -1,0 +1,70 @@
+#game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 20px;
+  border-top: 1px solid var(--border);
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.game-canvas {
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 2 / 1;
+  border-radius: 8px;
+  border: 2px solid var(--accent-border);
+  box-shadow: var(--shadow);
+  image-rendering: pixelated;
+  cursor: pointer;
+  touch-action: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+.game-touch {
+  display: none;
+  gap: 12px;
+
+  button {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+    border-radius: 12px;
+    border: 2px solid var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-bg);
+    touch-action: none;
+    user-select: none;
+  }
+
+  .jump {
+    margin-left: 24px;
+  }
+
+  @media (pointer: coarse) {
+    display: flex;
+  }
+}
+
+.game-help {
+  margin: 0;
+  font-size: 15px;
+  max-width: 640px;
+
+  kbd {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--code-bg);
+    color: var(--text-h);
+  }
+}
