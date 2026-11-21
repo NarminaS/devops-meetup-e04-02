@@ -1,11 +1,49 @@
 import { useState } from 'react'
+import type { MouseEvent } from 'react'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
+import { Confetti } from './Confetti'
+import { MAX_CONFETTI_DURATION_MS, createBurst } from './confettiBurst'
+import type { ConfettiPiece } from './confettiBurst'
 import './App.css'
+
+const CELEBRATION_COUNT = 10
+
+function prefersReducedMotion() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+}
 
 function App() {
   const [count, setCount] = useState(0)
+  const [confetti, setConfetti] = useState<ConfettiPiece[]>([])
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    const next = count + 1
+    setCount(next)
+
+    if (prefersReducedMotion()) return
+
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = rect.left + rect.width / 2
+    const y = rect.top + rect.height / 2
+    let pieces = createBurst(x, y, 30)
+    if (next === CELEBRATION_COUNT) {
+      // Big celebration: extra bursts across the top of the screen
+      pieces = pieces.concat(
+        createBurst(window.innerWidth * 0.2, window.innerHeight * 0.3, 60),
+        createBurst(window.innerWidth * 0.5, window.innerHeight * 0.2, 60),
+        createBurst(window.innerWidth * 0.8, window.innerHeight * 0.3, 60),
+      )
+    }
+    setConfetti((current) => current.concat(pieces))
+
+    // Remove this burst once every piece has finished animating
+    const ids = new Set(pieces.map((p) => p.id))
+    window.setTimeout(() => {
+      setConfetti((current) => current.filter((p) => !ids.has(p.id)))
+    }, MAX_CONFETTI_DURATION_MS + 100)
+  }
 
   return (
     <>
@@ -21,14 +59,17 @@ function App() {
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
+        <button type="button" className="counter" onClick={handleClick}>
           Count is {count}
         </button>
+        <p className="celebration" role="status" aria-live="polite">
+          {count === CELEBRATION_COUNT && (
+            <span>🎉 You reached {CELEBRATION_COUNT}! Party time! 🎉</span>
+          )}
+        </p>
       </section>
+
+      <Confetti pieces={confetti} />
 
       <div className="ticks"></div>
 

@@ -1,0 +1,38 @@
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.confetti-piece {
+  position: absolute;
+  border-radius: 2px;
+  opacity: 0;
+  animation-name: confetti-burst;
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1);
+  animation-fill-mode: forwards;
+
+  &.round {
+    border-radius: 50%;
+  }
+}
+
+@keyframes confetti-burst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+      rotate(calc(var(--rot) * 0.6));
+  }
+  100% {
+    opacity: 0;
+    /* fall down a bit under "gravity" while fading out */
+    transform: translate(calc(-50% + var(--dx) * 1.15), calc(-50% + var(--dy) + 140px))
+      rotate(var(--rot));
+  }
+}
